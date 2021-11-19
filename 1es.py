@@ -11,9 +11,12 @@ def ric(indicegruppo,massimo):
             return 0
     if indicegruppo==0:
         massimoLocale=0
-        for i in range(0,massimo+1):
+        for i in range(massimo+1):
+            #print(indicegruppo,i)
             if (indicegruppo,i)in d:
-                return d[(indicegruppo,i)]
+                if d[(indicegruppo,i)]>massimoLocale:
+                    massimoLocale=d[(indicegruppo,i)]
+                continue
             regaliTotaliParenti=0
             for j in range(len(gruppo[indicegruppo])):
                 if i<=gruppo[indicegruppo][j]:
@@ -23,17 +26,18 @@ def ric(indicegruppo,massimo):
             if val>massimoLocale:
                 massimoLocale=val
         return massimoLocale
-        
+    
     massimoLocale=0
-    for i in range(0,massimo+1):
+    for i in range(massimo+1):
         if (indicegruppo,i)in d :
-            return d[(indicegruppo,i)]
+            if d[(indicegruppo,i)]>massimoLocale:
+                massimoLocale=d[(indicegruppo,i)]
+            continue
         regaliTotaliParenti=0
         for j in range(len(gruppo[indicegruppo])):
             if i<=gruppo[indicegruppo][j]:
                 regaliTotaliParenti+=i
         val=regaliTotaliParenti+ric(indicegruppo+1,i)
-        
         d[(indicegruppo,i)]=val
         if val>massimoLocale:
             massimoLocale=val
@@ -49,7 +53,9 @@ if __name__ == "__main__":
         for j in range(len(gruppo[i])):
             if gruppo[i][j]>massimo:
                 massimo=gruppo[i][j]
-
+    
+    
     risultato=ric(0,massimo)/(10*decimali)
+    #print(d)
     print(risultato)
-  
+ 
