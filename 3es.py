@@ -3,10 +3,10 @@
 # maschi=[2,2,4]
 # femmine=[4,5,2]
 m=[
-    [2,2,1],
-    [4,2,4]
+    [20,20,10,50],
+    [40,20,50,34]
 ]
-k=3
+k=40
 d={}
 def ric(indice,maschiattuali,femmineattuali):
     if indice>=len(m[0]):
@@ -25,10 +25,10 @@ def ric(indice,maschiattuali,femmineattuali):
         inizio[piccolo]=k
     minimoLocale=10000000
 
-    while(inizio[piccolo]>0 and inizio[grande]<m[grande][indice]):
+    while(inizio[piccolo]>=0 and inizio[grande]<=m[grande][indice]):
+        val=ric(indice+1,maschiattuali+inizio[0],femmineattuali+inizio[1])
         inizio[grande]+=1
         inizio[piccolo]-=1
-        val=ric(indice+1,maschiattuali+inizio[0],femmineattuali+inizio[1])
         if val<minimoLocale:
             minimoLocale=val
     d[(maschiattuali,femmineattuali)]=minimoLocale
@@ -36,3 +36,4 @@ def ric(indice,maschiattuali,femmineattuali):
 
 if __name__ == '__main__':
     print(ric(0,0,0))
+    
