@@ -1,47 +1,5 @@
 
 
-
-# if maschi[indice]<=femmine[indice]:
-    #     if k>=maschi[indice]:
-    #         inizio[0]=maschi[indice]
-    #         inizio[1]=k-maschi[indice]
-    #     else:
-    #         inizio[0]=k
-    # else:
-    #     if k>=femmine[indice]:
-    #         inizio[1]=femmine[indice]
-    #         inizio[0]=k-femmine[indice]
-    #     else:
-    #         inizio[1]=k
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # maschi=[2,2,4]
 # femmine=[4,5,2]
 m=[
