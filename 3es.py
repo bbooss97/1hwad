@@ -2,38 +2,37 @@
 
 # maschi=[2,2,4]
 # femmine=[4,5,2]
-m=[
+schools=[
     [20,20,10,50],
     [40,20,50,34]
 ]
 k=40
-d={}
-def ric(indice,maschiattuali,femmineattuali):
-    if indice>=len(m[0]):
-        return abs(maschiattuali-femmineattuali)
-    if (maschiattuali,femmineattuali) in d:
-        return d[(maschiattuali,femmineattuali)]
-    #maschi=0,femmine=1
-    inizio=[0,0]
-    grande=0 if m[0][indice]>=m[1][indice] else 1
-    piccolo=1-grande
-    
-    if k>=m[piccolo][indice]:
-        inizio[piccolo]=m[piccolo][indice]
-        inizio[grande]=k-m[piccolo][indice]
+dp={}
+def recursive(schoolIndex,boys,girls):
+    if schoolIndex>=len(schools[0]):
+        return abs(boys-girls)
+    if (boys,girls) in dp:
+        return dp[(boys,girls)]
+    #boys=0,girls=1
+    chosen=[0,0]
+    biggestGroup=0 if schools[0][schoolIndex]>=schools[1][schoolIndex] else 1
+    smallestGroup=1-biggestGroup
+    if k>=schools[smallestGroup][schoolIndex]:
+        chosen[smallestGroup]=schools[smallestGroup][schoolIndex]
+        chosen[biggestGroup]=k-schools[smallestGroup][schoolIndex]
     else:
-        inizio[piccolo]=k
-    minimoLocale=10000000
-
-    while(inizio[piccolo]>=0 and inizio[grande]<=m[grande][indice]):
-        val=ric(indice+1,maschiattuali+inizio[0],femmineattuali+inizio[1])
-        inizio[grande]+=1
-        inizio[piccolo]-=1
-        if val<minimoLocale:
-            minimoLocale=val
-    d[(maschiattuali,femmineattuali)]=minimoLocale
-    return minimoLocale
+        chosen[smallestGroup]=k
+    localMinimum=10000000
+    while(chosen[smallestGroup]>=0 and chosen[biggestGroup]<=schools[biggestGroup][schoolIndex]):
+        val=recursive(schoolIndex+1,boys+chosen[0],girls+chosen[1])
+        chosen[biggestGroup]+=1
+        chosen[smallestGroup]-=1
+        if val<localMinimum:
+            localMinimum=val
+    dp[(boys,girls)]=localMinimum
+    return localMinimum
 
 if __name__ == '__main__':
-    print(ric(0,0,0))
+    result=recursive(0,0,0)
+    print(result)
     
