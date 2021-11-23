@@ -1,7 +1,7 @@
 
 
-# maschi=[2,2,4]
-# femmine=[4,5,2]
+#boys
+#girls
 schools=[
     [20,20,10,50],
     [40,20,50,34]
