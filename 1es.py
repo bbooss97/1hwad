@@ -1,39 +1,39 @@
-gruppo=[[15.2,9.4,11.1],
+relatives=[[15.2,9.4,11.1],
         [9.7,12.2,7.5,10.8],  
         [5.2,6.3,5.6,10.2],   
         [4.9,2,3.5,2.9],
         [1,6.4,4.6,2.1]]
-#ris=116.3
-d={}
-decimali=1
-def ric(indicegruppo,massimo):
-    if indicegruppo>=len(gruppo):
+numberOfDecimals=1
+dp={}
+def recursive(dist,pr):
+    if dist>=len(relatives):
             return 0
-    massimoLocale=0
-    if (indicegruppo,massimo)in d:
-            return d[(indicegruppo,massimo)]
-    for i in range(massimo+1):
-        regaliTotaliParenti=0
-        for j in range(len(gruppo[indicegruppo])):
-            if gruppo[indicegruppo][j]>=massimo:
-                regaliTotaliParenti+=massimo
-            elif i<=gruppo[indicegruppo][j]:
-                regaliTotaliParenti+=gruppo[indicegruppo][j]
-        val=regaliTotaliParenti+ric(indicegruppo+1,i)
-        if val>massimoLocale:
-            massimoLocale=val
-    d[(indicegruppo,massimo)]=massimoLocale
-    return massimoLocale
+    maximumGift=0
+    if (dist,pr)in dp:
+            return dp[(dist,pr)]
+    for i in range(pr+1):
+        totalValueAtRow=0
+        for j in range(len(relatives[dist])):
+            if relatives[dist][j]>=pr:
+                totalValueAtRow+=pr
+            elif i<=relatives[dist][j]:
+                totalValueAtRow+=relatives[dist][j]
+        val=totalValueAtRow+recursive(dist+1,i)
+        if val>maximumGift:
+            maximumGift=val
+    dp[(dist,pr)]=maximumGift
+    return maximumGift
 
 if __name__ == "__main__":
-    for i in range(len(gruppo)):
-        for j in range(len(gruppo[i])):
-            gruppo[i][j]=int(gruppo[i][j]*(10*decimali))
-    massimo=0
-    for i in range(len(gruppo)):
-        for j in range(len(gruppo[i])):
-            if gruppo[i][j]>massimo:
-                massimo=gruppo[i][j]
-    risultato=ric(0,massimo)/(10*decimali)
-    print(risultato)
+    #vr=vr*10*approximation
+    for i in range(len(relatives)):
+        for j in range(len(relatives[i])):
+            relatives[i][j]=int(relatives[i][j]*(10*numberOfDecimals))
+    maximumVr=0
+    for i in range(len(relatives)):
+        for j in range(len(relatives[i])):
+            if relatives[i][j]>maximumVr:
+                maximumVr=relatives[i][j]
+    result=recursive(0,maximumVr)/(10*numberOfDecimals)
+    print(result)#out=116.3
  
