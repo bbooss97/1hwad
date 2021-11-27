@@ -1,0 +1,31 @@
+Exercise 4:
+To prove that the given problem is NP complete we have to:
+-prove that the problem is in np
+-there exists a polynomial time reduction from a known NP complete problem to this one.
+
+To prove the first we have to give a polynomial certificate verifier that is an algorithm that:
+for each child checks if the chosen bags for him of the solution contain all the sweets he needs and that no more than k bags of the same types were chosen.
+This is clearly a polynomial certifier.
+
+To prove the second point we start from a modified version of SAT where every clause has either all positive or all negative literals that is an NP complete.
+All the clauses are in this form (x1 or x2 or ...) and (-x1 or -x2 or ...)
+From the modified SAT create the following instance of the santa problem:
+
+C=set of clauses
+K1={V ci C C : if ci in the form of (xj V…) :i }
+K2={V ci C C : if ci in the form of (-xj V…) :i }
+B={bj : V ci C C in the form of (xj V …)or(-xj V...) : i C bj }
+k=1
+
+The first child will have for each positive clause a sweet i (index of the clause).
+The second child will have from each negative clause a sweet i (index of the clause).
+We will have for each literal j(index of the literal) present in the clauses a bag j.
+For each clause i and for each literal of that clause j , we will have a candy i(index of the clause) in the bag j (index of the literal).
+The instance of the problem will have a k=1 so that the grinch will not be able to get more than 1 bag of the same kind.
+
+To get a result for the modified SAT problem from the reduction we analyze the chosen bags by the grinch:
+if for the first child the grinch chose the bag i then the xi has to be a 1.
+if for the second child the grinch chose the bag i then xi has to be a 0.
+if the grinch is not able to fulfill all the two children needs than there is no solution for the modified SAT.
+
+We now have a polynomial reduction from the modified SAT to the santa problem, that means that the santa problem is np complete.
