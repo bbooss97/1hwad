@@ -18,7 +18,7 @@ Calculating the max(giftsAtDistancei+ric(i+1,yi)) for each yi in {0...yi-1}, we 
 
 analysis of the runtime:
 The runtime of the algorithm is O(C* i *max(vr)) 
-Where C is a constant, i is the number of distances and max(vr) is the maximum of all the v between every relative. 
+Where C is a constant, i is the number of distances and max(vr) is the maximum of all the v of the relatives. 
 In the worst case scenario i is equal to r and max(vr)in the worst case is evaluated in every iteration ,so the cost is O(n*max(vr)) that is the cost to fill the entire hashmap,multiplied by a constant value c for every evaluation of the function.
 In practise it is also multiplied by a factor to describe the granularity of the result(float numbers or approximations).
 1.b
@@ -58,7 +58,7 @@ if __name__ == "__main__":
             if relatives[i][j]>maximumVr:
                 maximumVr=relatives[i][j]
     result=recursive(0,maximumVr)/10
-    print(result)#out=116.3
+    print(result)  #out=116.3
 
 We multiply initially every v by 10 to take into account the decimals and then the result will be divided by 10.
 The result of the execution of the code with the input of the problem 2.b is: 116.3.
@@ -67,7 +67,7 @@ The result of the execution of the code with the input of the problem 2.b is: 11
 
 EXERCISE 2
 2.a
-The network G(N,E) modelled is composed as follows: on the left we have the nodes representing the rows, where a row is identified by ai, given ai ∈ A , A ∈ N. On the right we have the nodes representing the columns where a column is identified by bj, given bj ∈ N, B ∈ N. Each node ai is connected with an edge to every node bj, and each edge e(ai,bj) have capacity 1. The idea is that, after the execution of the Ford-Fulkerson algorithm, each e(ai,bj) with saturated capacity will indicate that there will be a shop in the city in row i and column j. Then we placed the source node S, which is connected with an edge with every node ai and each of these edges e(S,ai) have capacity ri to limit the flow as stated in the problem, so limit the number of shops that can be opened given a row. Then we added the sink node t to which all the nodes bj are connected with edges e(bj,t) with capacity cj to put the limit also on the shops that can be opened given a column, limiting flow passing through that edge.
+The network G(N,E) modelled is composed as follows: The idea is that, after the execution of the Ford-Fulkerson algorithm, each e(ai,bj) with saturated capacity will indicate that there will be a shop in the city in row i and column j. Then we placed the source node S, which is connected with an edge with every node ai and each of these edges e(S,ai) have capacity ri to limit the flow as stated in the problem, so limit the number of shops that can be opened given a row. Then we added the sink node t to which all the nodes bj are connected with edges e(bj,t) with capacity cj to put the limit also on the shops that can be opened given a column, limiting flow passing through that edge.
 The scope of the problem is to find the maximum number of shops that can be opened in the city and this can be achieved by applying the Ford-Fulkerson algorithm. The resulting max-flow will be the number of shops that can be opened given the constraints of the problem.
 
 Figure 1: the network flow modelled
@@ -80,8 +80,6 @@ After having checked the feasible circulation, we translated our graph G’ back
 [1] Kleinberg J, Tardos E, Algorithm Design,  ‘proof 7.52’ pp. 384
 
 
--Nella trasformazione in G’ non sono presenti tutti i passi. Vedere se necessario descrivere la trasformazione.
--Vedere se necessario definizione formale di tutti i G.
 
 
 
@@ -99,7 +97,119 @@ After having checked the feasible circulation, we translated our graph G’ back
 
 
 
-Excercise 3
+
+
+
+Exercise 2:
+2a)
+The network G(V,E) is modeled as follows:
+Vertices: s,t,A={a_i, for all i<=n}, B={b_j, for all j<=n} , V=union of S,T,A,B
+Edges: E_1={(s,a_i) for all i<=n}, E_2{(a_i,b_j) for all a_i and b_j}, E_3={(b_j,t) for all j<=n}, E= union of E_1,E_2,E_3
+Capacities: {for all e in E_1, c(e) = ri ; for all e in E_2 ,c(e)=1 ; for all e in E_3 , c(e)=cj}.
+To get the answer for the problem we have to use ford fulkerson on the network with source s and sink t.
+We used the capacities on the edges eE_1, eE_3 to describe the fact that we can’t put more than ri shops in the i-th row and more than cj shops in the j-th column. If there is a unit of flow in the edge e(a_i,b_j) then there exists a shop in row i and column j.
+Proof of correctness:
+2b)
+Given p=number of groups of 5 rows or columns each : p=n/5
+Vertices: s,t,X={x_z, for all z<=p}, A={a_i, for all i<=n}, B={b_j, for all j<=n} , Y={y_w, for all w<=p}, V= union of s,t,X,Y,A,B 
+Edges:E_1={(s,x_z) for all z<=p}, E_2{(x_z,a_i) for all z<=p and for all  (z-1)*5+1<= i <=z*5},
+ E_3{(a_i,b_j) for all a_i and b_j}, E_4{(b_j,y_w) for all w<=p and for all (w-1)*5+1<= j <=w*5}, E_5{(y_w,t) for all w<=p}, E=union E_1,E_2,E_3,E_4,E_5
+Capacities: {for all e in E_1, c(e)=inf; for all e in E_2,c(e)=ri; for all e in E_3,c(e)=1; for all e in E_4, c(e)=cj; for all e in E_5, c(e)=inf}
+Lower Bounds= {for all e in E_1,l(e)=1 ; for all e in E_5,l(e)=1}
+
+To check if it is possible to solve the problem with the new given constraints (to see if exists a yes instance),we construct a new graph G’=(V’,E’) from G by adding new source and sink vertices s’ and t’, adding edges from s’ to each vertex in V, adding edges from each vertex in V to t’, and finally adding an edge from t to s. We define the capacity c’(e) of each edge eE’ as follows:
+For each vertex vV, we set c’(s’v) = uVl(uv)
+For each vertex vV, we set c’(vt’) = wVl(vw)
+For each edge uvE, we set c’(uv)= u(uv) - l(uv)
+Finally,we set c’(ts)= 
+
+We now run the normal ford fulkerson and see if G’ is saturated once the algorithm finish its execution: we check that for every outgoing edges from s’ and for every ingoing edges to t’, the flow that passes through them is equal to the maximum capacities of the edges, saturating so the capacities. If that’s the case then we can satisfy the lower bounds in the original network G . In case those edges are not saturated then, the problem can’t be solved given the constraint of minimum shop opened for each 5 columns and rows.In case of a ‘yes’ instance we go back to the original G network where in each edge to the flow found in the previous step f(e) we sum the initial lower bound l(e) so f(e)=f(e)+l(e).We construct the residual edges with a forward edge of capacity c(e)=c(e)-f(e) and backward edge of capacity c(e)=f(e)-l(e) and we restart another ford fulkerson from s to t gradually finding augmenting paths to find the max flow that ,as in point 2a) will be equal to the number of shops that will be opened in row i and column j if there is a unit flow passing through the edge e((a_i,b_j)) E_3.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Excercise 3:
 In order to solve the problem we decided to use a dynamic programming approach: 
 We created a recursive function makeSelection that for every school tries all possible combinations of boys and girls given k and each combination will be used to continue the recursion in the following schools.
 For every possible combination allowed, we call the recursive function to the next school ( so the school i+1) ,passing to the function the total number of boys chosen until that moment plus the number  of boys chosen in the current combination and, the total number of girls chosen until that moment plus the number of girl chosen in the current combination. We then return the minimum of all those recursive calls and save that value(the best for the current boys and girls) .
@@ -165,6 +275,6 @@ we construct the instance of the santa problem:
 k=2,K1={1,4} K2={2,3,5}
 B1={1,4,5} B2={} B3={1,2,3,5} B4={1,2,5} B5={2,3}
 the grinch will choose for example: B(1)={1}  B(2)={3,5} 
-the the solution for the sat modified problem is x1=1,x3=0,x5=0,x2=(0 or 1),x4=(0 or 1)
+the solution for the sat modified problem is x1=1,x3=0,x5=0,x2=(0 or 1),x4=(0 or 1)
 Since the grinch was able to find a solution, there exists a solution for the modified SAT problem.
 
