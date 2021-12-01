@@ -102,11 +102,11 @@ In order to solve the problem we decided to use a dynamic programming approach:
 We created a recursive function makeSelection that for every school tries all possible combinations of boys and girls given k and each combination will be used to continue the recursion in the following schools.
 For every possible combination allowed, we call the recursive function to the next school ( so the school i+1) ,passing to the function the total number of boys chosen until that moment plus the number  of boys chosen in the current combination and, the total number of girls chosen until that moment plus the number of girl chosen in the current combination. We then return the minimum of all those recursive calls and save that value(the best for the current boys and girls) .
 In the next iterations ,if a recursive function has already calculated a best solution for the same number of boys and girls ,then we return that value without re-evaluating the recursive function, since it will end up with the same best solution.
-Since we take into account all possible combinations of boys and girls for every school, we will end up with a global optimal solution for the problem: at every boysChoosen and girlsChoosen we return the max(makeSelection(i+i,boysChoosen+ba,girlsChoosen+ga)for every ba,ga in allValidCombinations(bi,gi,k).
-So if we have a maximum for every boysChoosen and girlsChoosen, then makeSelection of (0,0,0) will return the global maximum .
+proof: Since we take into account all possible combinations of boys and girls for every school, we will end up with a global optimal solution for the problem: at every boysChoosen and girlsChoosen we return the max(makeSelection(i+i,boysChoosen+,girlsChoosen+)for every ba,ga in allCombinations(,,k).
+So if we have a maximum for every boysChoosen and girlsChoosen, then makeSelection of (0,0,0) will return the global maximum .The memorization works because in a iteration ,if a recursive function has already calculated a best solution for the same number of boys and girls ,then we return that value without re-evaluating the recursive function, since it will end up with the same best solution. Moreover we didn’t add i to the memorization since for each i and i+1 we will have a total number of students chosen that will increase by k so there is no possibility that at two different schools we will end up with the same number of girls and boys chosen .
+
+
 Starting from i=o, boysChoosen= 0, girlsChoosen= 0. Given n= list of schools, i = index of schools, dp = hashmap for memorization
-
-
 function makeSelection ( i, boysChoosen, girlsChoosen):
         if i>=len(n):  
                       return |boysChoosen - girlsChoosen|
@@ -115,17 +115,19 @@ function makeSelection ( i, boysChoosen, girlsChoosen):
         l=allValidCombinations(bi,gi,k)
         bestSolution = ∞
         for bi , gi in l:
-possibleSolution= makeSelection(i+1,boysChoosen+bi ,girlsChoosen +gi)
+                            possibleSolution= makeSelection(i+1,boysChoosen+bi ,girlsChoosen +gi)
                 if possibleSolution < bestSolution:
                         bestSolution = possibleSolution
-dp[(i,boysChoosen,girlsChoosen)]=bestSolution
-        return bestSolution
-function allValidCombinations(bi,gi,k):
+                          dp[(i,boysChoosen,girlsChoosen)]=bestSolution
+                    return bestSolution
+
+
+function allCombinations(bi,gi,k):
         return a list of all possible combinations of gi and bi given k.
 
 
-The cost of the algorithm is O( C* max(bi)*n *max(gi)*n)  O(C**max(bi)*max(gi))O( C* )C*O(n^2) with C that is a constant.Thats because the cost of this problem is the total number of iterations needed to fill the hashmap multiplied by a constant value for every evaluation.
-Since we are using a hashmap instead of a matrix in the average case we will have C=O() but in the worst case scenario it will be O(n^3). Anyway, in every case, the algorithm will run in polynomial time.
+The cost of the algorithm is O( C* max(bi)*n *max(gi)*n)  O(C*n2*max(bi)*max(gi))O( C*n2 )C*O(n^2) with C that is a constant.Thats because the cost of this problem is the total number of iterations needed to fill the hashmap multiplied by a constant value for every evaluation.
+Since we are using a hashmap instead of a matrix in the average case we will have C=O(n2) but in the worst case scenario it will be O(n^3). Anyway, in every case, the algorithm will run in polynomial time.
 Exercise 4:
 To prove that the given problem is NP-complete we have to:
 -prove that the problem is in np
