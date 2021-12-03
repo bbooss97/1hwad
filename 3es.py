@@ -1,13 +1,44 @@
-
-
 #boys
 #girls
 schools=[
-    [2000,2000,1000,5000,2000,2000,1000,5000,2000,2000,1000,5000],
-    [4000,2000,5000,3004,2000,2000,1000,5000,2000,2000,1000,5000]
+    [5,3,1,5,4,3,1,1,1],
+    [5,6,3,2,6,8,3,5,4]
 ]
-k=4000
+
+k=4
 dp={}
+def solver(schools,k):
+    presiAttualmente=[[0 for i in range(len(schools[0]))] for j in range(2)]
+    possocambiare=[0 for i in range(len(schools[0]))]
+    sommamaschi=0
+    sommafemmine=0
+    for i in range(len(schools[0])):
+        if schools[0][i]>=k:
+            presiAttualmente[0][i]=k
+            sommamaschi+=k
+        else:
+            presiAttualmente[0][i]=schools[0][i]
+            presiAttualmente[1][i]=k-schools[0][i]
+            sommamaschi+=schools[0][i]
+            sommafemmine+=k-schools[0][i]    
+        possocambiare[i]=min(schools[1][i]-presiAttualmente[1][i],presiAttualmente[0][i])
+    print(presiAttualmente[0])
+    print(presiAttualmente[1])
+    print(possocambiare)
+    for i in range(len(schools[0])): 
+        if sommamaschi<=sommafemmine+1:
+            break
+        val=min(possocambiare[i],int((sommamaschi-sommafemmine)/2))
+        sommamaschi-=val
+        sommafemmine+=val
+        presiAttualmente[0][i]-=val
+        presiAttualmente[1][i]+=val
+    # print(sommamaschi-sommafemmine)
+    print(presiAttualmente[0])
+    print(presiAttualmente[1])
+    return sommamaschi-sommafemmine
+
+
 def recursive(schoolIndex,boys,girls):
     if schoolIndex>=len(schools[0]):
         return abs(boys-girls)
@@ -32,7 +63,13 @@ def recursive(schoolIndex,boys,girls):
     dp[(boys,girls)]=localMinimum
     return localMinimum
 
+
+
+
+
 if __name__ == '__main__':
-    result=recursive(0,0,0)
-    print(result)
+    
+    print(solver(schools,k))
+    print(recursive(0,0,0))
+    
     
