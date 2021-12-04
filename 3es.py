@@ -1,10 +1,9 @@
 #boys
 #girls
 schools=[
-    [5,3,1,5,4,3,1,1,1],
+    [5,4,1,5,4,3,1,1,1],
     [5,6,3,2,6,8,3,5,4]
 ]
-
 k=4
 dp={}
 def solver(schools,k):
@@ -22,9 +21,6 @@ def solver(schools,k):
             sommamaschi+=schools[0][i]
             sommafemmine+=k-schools[0][i]    
         possocambiare[i]=min(schools[1][i]-presiAttualmente[1][i],presiAttualmente[0][i])
-    print(presiAttualmente[0])
-    print(presiAttualmente[1])
-    print(possocambiare)
     for i in range(len(schools[0])): 
         if sommamaschi<=sommafemmine+1:
             break
@@ -33,9 +29,7 @@ def solver(schools,k):
         sommafemmine+=val
         presiAttualmente[0][i]-=val
         presiAttualmente[1][i]+=val
-    # print(sommamaschi-sommafemmine)
-    print(presiAttualmente[0])
-    print(presiAttualmente[1])
+
     return sommamaschi-sommafemmine
 
 
